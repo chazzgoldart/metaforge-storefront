@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>METAFORGE — Digital Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-archive="all">
+
+  <!-- Blueprint Background Layer -->
+  <div class="bp-grid"></div>
+  <div class="bp-scan"></div>
+  <div class="bp-noise"></div>
+  <canvas id="bp-canvas"></canvas>
+
+  <!-- ───────────── HEADER ───────────── -->
+  <header class="hdr">
+    <a href="#top" class="hdr-brand">
+      <img src="images/h-dfMMN7WpWISP2ygdf8fw@2k.webp" alt="METAFORGE" class="hdr-mark"/>
+      <span class="hdr-name">METAFORGE</span>
+    </a>
+    <nav class="hdr-nav">
+      <a href="#archives">Archives</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#manifest">Manifest</a>
+    </nav>
+    <button class="hdr-cart" id="open-cart" aria-label="Open forge queue">
+      <span class="hdr-cart-label">FORGE QUEUE</span>
+      <span class="hdr-cart-count" id="cart-count">0</span>
+    </button>
+  </header>
+
+  <!-- ───────────── HERO ───────────── -->
+  <section class="hero" id="top">
+    <div class="hero-stack">
+      <div class="hero-meta">
+        <span class="hero-coord">N 41°42'58" / W 12°27'06"</span>
+        <span class="hero-stamp">// SYS.METAFORGE.v1.0 — 2026</span>
+      </div>
+
+      <div class="hero-float">
+        <div class="hero-float-light"></div>
+        <div class="hero-float-rays">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <canvas id="hero-3d"></canvas>
+        <div class="hero-float-rings"><i></i><i></i><i></i></div>
+        <div class="hero-float-base"></div>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="line">METAFORGE</span>
+      </h1>
+
+      <p class="hero-sub">
+        A curated digital archive of forged figurines.<br/>
+        Real-time fabrication. Limited edition. Shipped worldwide.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#archives" class="btn btn-primary">
+          <span>ENTER THE ARCHIVE</span>
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#manifest" class="btn btn-ghost">READ MANIFEST</a>
+      </div>
+
+      <div class="hero-marquee">
+        <div class="track">
+          <span>FORGED ON DEMAND</span><span>·</span>
+          <span>RESIN · CHROME · POLYMER</span><span>·</span>
+          <span>GLOBAL FULFILLMENT NETWORK</span><span>·</span>
+          <span>FORGED ON DEMAND</span><span>·</span>
+          <span>RESIN · CHROME · POLYMER</span><span>·</span>
+          <span>GLOBAL FULFILLMENT NETWORK</span><span>·</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── MASK SHOWCASE ───────────── -->
+  <section class="showcase" id="showcase">
+    <div class="showcase-meta">
+      <span>// FORGE.SPECIMEN.01</span>
+      <span>RENDERED IN REAL-TIME · WEBGL</span>
+    </div>
+    <div class="showcase-float">
+      <div class="hero-float-light"></div>
+      <div class="hero-float-rays">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <canvas id="mask-3d"></canvas>
+      <div class="hero-float-rings"><i></i><i></i><i></i></div>
+      <div class="hero-float-base"></div>
+    </div>
+    <p class="showcase-cap">A specimen from the forge.<br/>Liquid chrome. Cybernetic. Curated.</p>
+  </section>
+
+  <!-- ───────────── ARCHIVE PORTALS ───────────── -->
+  <section class="archives" id="archives">
+    <div class="section-head">
+      <span class="eyebrow">// SELECT.ARCHIVE</span>
+      <h2>Two archives.<br/>One forge.</h2>
+      <p>Each archive is a curated dimension. Step inside to begin.</p>
+    </div>
+
+    <div class="portals">
+      <button class="portal portal--01" data-archive="l1lbotz" data-portal>
+        <div class="portal-bg portal-bg--rust"></div>
+        <div class="portal-grid"></div>
+        <canvas class="portal-3d" id="portal-bot-3d"></canvas>
+        <div class="portal-inner">
+          <span class="portal-tag">ARCHIVE 01</span>
+          <h3 class="portal-name">L1L B0TZ</h3>
+          <p class="portal-desc">Retro-futuristic. Weathered. Industrial sci-fi. TV-head salvage units rendered in oxidized chrome.</p>
+          <div class="portal-stats">
+            <span><i>UNITS</i> 24</span>
+            <span><i>TIER</i> ARCH-01</span>
+            <span><i>STATUS</i> ACTIVE</span>
+          </div>
+          <span class="portal-enter">
+            ENTER ARCHIVE
+            <svg viewBox="0 0 24 24" width="12" height="12"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          </span>
+        </div>
+      </button>
+
+      <button class="portal portal--02" data-archive="xnormies" data-portal>
+        <div class="portal-bg portal-bg--pixel"></div>
+        <div class="portal-grid"></div>
+        <canvas class="portal-3d" id="portal-xn-3d"></canvas>
+        <div class="portal-inner">
+          <span class="portal-tag">ARCHIVE 02</span>
+          <h3 class="portal-name">XNORMIES</h3>
+          <p class="portal-desc">Gritty. Human-centric. Disruptive. Pixel-art figures forged in defiance of the algorithm.</p>
+          <div class="portal-stats">
+            <span><i>UNITS</i> 18</span>
+            <span><i>TIER</i> ARCH-02</span>
+            <span><i>STATUS</i> ACTIVE</span>
+          </div>
+          <span class="portal-enter">
+            ENTER ARCHIVE
+            <svg viewBox="0 0 24 24" width="12" height="12"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          </span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ───────────── GALLERY ───────────── -->
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-head">
+      <div>
+        <span class="eyebrow">// VIEWPORT</span>
+        <h2 id="gallery-title">All Units</h2>
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">ALL</button>
+        <button class="chip" data-filter="l1lbotz">L1L B0TZ</button>
+        <button class="chip" data-filter="xnormies">XNORMIES</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"><!-- JS renders --></div>
+  </section>
+
+  <!-- ───────────── MANIFEST ───────────── -->
+  <section class="manifest" id="manifest">
+    <span class="eyebrow">// MANIFEST</span>
+    <h2 class="manifest-title">Forged in defiance<br/>of the algorithm.</h2>
+    <p class="manifest-body">
+      METAFORGE is a real-time fabrication studio. Every figurine is printed on demand through a distributed
+      network of certified partners — museum-grade resin, hand-finished, shipped in 48-72 hours.
+      Limited drops. Numbered editions. Permanent archive.
+    </p>
+    <a href="mailto:contact@metaforge.studio" class="manifest-mail">contact@metaforge.studio</a>
+  </section>
+
+  <footer class="ftr">
+    <span>© 2026 METAFORGE</span>
+    <span class="mono">SYS // v1.0 · ALL UNITS FORGED ON DEMAND</span>
+  </footer>
+
+  <!-- ───────────── FORGE QUEUE (Cart Drawer) ───────────── -->
+  <div class="drawer-veil" id="drawer-veil"></div>
+  <aside class="drawer" id="drawer" aria-label="Forge Queue">
+    <header class="drawer-head">
+      <div>
+        <span class="eyebrow">// FORGE.QUEUE</span>
+        <h3>Fulfillment Manifest</h3>
+      </div>
+      <button class="drawer-close" id="close-cart" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+    </header>
+
+    <div class="drawer-body" id="drawer-body">
+      <div class="drawer-empty" id="drawer-empty">
+        <div class="drawer-empty-mark"></div>
+        <p>Queue is empty.<br/><span>Select a unit to begin forging.</span></p>
+      </div>
+      <ul class="drawer-list" id="drawer-list"></ul>
+    </div>
+
+    <footer class="drawer-foot">
+      <div class="drawer-totals">
+        <div><span>SUBTOTAL</span><b id="cart-subtotal">$0.00</b></div>
+        <div><span>FORGE FEE</span><b id="cart-fee">$0.00</b></div>
+        <div class="grand"><span>TOTAL</span><b id="cart-total">$0.00</b></div>
+      </div>
+      <button class="checkout-btn" id="checkout" disabled>
+        <span>PROCEED TO CHECKOUT</span>
+        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+      <p class="drawer-fineprint">Secure payload · Stripe-ready · Worldwide shipping</p>
+    </footer>
+  </aside>
+
+  <!-- ───────────── TOAST ───────────── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script src="js/app.js" type="module"></script>
+  <script src="js/hero3d.js" type="module"></script>
+</body>
+</html>
