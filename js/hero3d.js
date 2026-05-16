@@ -8,6 +8,102 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+/* ═══════════════════════════════════════════════════════════
+   Global loading tracker — all scenes register their progress
+   so the loader UI shows real progress and dismisses when done.
+   ═══════════════════════════════════════════════════════════ */
+const LOADER = {
+  el:      document.getElementById('loader'),
+  fill:    document.getElementById('loader-bar-fill'),
+  pct:     document.getElementById('loader-pct'),
+  status:  document.getElementById('loader-status'),
+  scenes:  new Map(),    // sceneId -> { loaded, total, done }
+  startAt: performance.now(),
+
+  register(id) {
+    this.scenes.set(id, { loaded: 0, total: 0, done: false });
+  },
+
+  update(id, loaded, total) {
+    const s = this.scenes.get(id);
+    if (!s) return;
+    s.loaded = loaded;
+    if (total) s.total = total;
+    this.render();
+  },
+
+  finish(id) {
+    const s = this.scenes.get(id);
+    if (s) { s.done = true; s.loaded = s.total = Math.max(s.total, 1); }
+    this.render();
+    if ([...this.scenes.values()].every(x => x.done)) this.dismiss();
+  },
+
+  render() {
+    const totals = [...this.scenes.values()];
+    if (totals.length === 0) return;
+    // If total bytes are unknown, fall back to per-scene "done" weighting
+    const knownTotals = totals.every(s => s.total > 0);
+    let pct = 0;
+    if (knownTotals) {
+      const sum = totals.reduce((a, s) => a + s.total, 0);
+      const got = totals.reduce((a, s) => a + s.loaded, 0);
+      pct = sum ? (got / sum) * 100 : 0;
+    } else {
+      const done = totals.filter(s => s.done).length;
+      pct = (done / totals.length) * 100;
+    }
+    pct = Math.min(99, pct);
+    if (totals.every(s => s.done)) pct = 100;
+
+    if (this.fill) this.fill.style.width = pct.toFixed(1) + '%';
+    if (this.pct)  this.pct.textContent  = Math.round(pct) + '%';
+    if (this.status) {
+      const phase = pct < 30 ? 'STREAMING ASSETS'
+                  : pct < 70 ? 'FORGING SCENES'
+                  : pct < 100 ? 'CALIBRATING LIGHTS'
+                  : 'READY';
+      this.status.textContent = phase + '…';
+    }
+  },
+
+  dismiss() {
+    if (!this.el) return;
+    // Minimum visible time so it doesn't flash
+    const elapsed = performance.now() - this.startAt;
+    const wait = Math.max(0, 700 - elapsed);
+    setTimeout(() => {
+      this.status && (this.status.textContent = 'READY');
+      this.fill && (this.fill.style.width = '100%');
+      this.pct && (this.pct.textContent = '100%');
+      setTimeout(() => this.el.classList.add('gone'), 250);
+    }, wait);
+  },
+};
+
+// Safety net — dismiss after 30s no matter what (e.g. if a GLB fails)
+setTimeout(() => LOADER?.el && LOADER.el.classList.add('gone'), 30000);
+
+/* ───────── Reveal saved rotations (so you can bake them as defaults) ───────── */
+(function showSavedRotations() {
+  const keys = ['mf_hero_rot', 'mf_mask_rot', 'mf_bot_rot', 'mf_xn_rot'];
+  const out = {};
+  keys.forEach(k => {
+    try { out[k] = JSON.parse(localStorage.getItem(k)) || null; } catch { out[k] = null; }
+  });
+  console.log('%c🔧 METAFORGE SAVED ROTATIONS', 'background:#b7c9ff;color:#000;padding:6px 14px;font-weight:700;border-radius:4px;font-size:12px;');
+  Object.entries(out).forEach(([k, v]) => {
+    if (v) {
+      const yd = (v.y * 180 / Math.PI).toFixed(1);
+      const xd = (v.x * 180 / Math.PI).toFixed(1);
+      console.log(`  ${k}:  Y: ${yd}°  X: ${xd}°    →    { y: ${v.y.toFixed(4)}, x: ${v.x.toFixed(4)} }`);
+    } else {
+      console.log(`  ${k}:  (not set)`);
+    }
+  });
+  console.log('%c💡 Copy these values and tell Claude to bake them in for the live site.', 'color:#8a8f9c;font-style:italic;');
+})();
+
 function createFloatingScene({
   canvas,
   modelPath,
@@ -96,6 +192,9 @@ function createFloatingScene({
   let model = null;
   let modelReady = false;
 
+  // Register this scene with the global loader UI
+  LOADER.register(saveKey);
+
   loader.load(
     modelPath,
     (gltf) => {
@@ -126,8 +225,16 @@ function createFloatingScene({
       pivot.add(model);
       modelReady = true;
       canvas.classList.add('ready');
+      LOADER.finish(saveKey);
     },
-    undefined,
+    (evt) => {
+      // Real download progress (when Content-Length is available)
+      if (evt && evt.lengthComputable) {
+        LOADER.update(saveKey, evt.loaded, evt.total);
+      } else if (evt) {
+        LOADER.update(saveKey, evt.loaded || 0, 0);
+      }
+    },
     (err) => {
       console.warn(`GLB load failed for ${modelPath}, using fallback:`, err);
       const geo = new THREE.TorusKnotGeometry(0.7, 0.22, 180, 32);
@@ -135,6 +242,7 @@ function createFloatingScene({
       model = new THREE.Mesh(geo, mat);
       pivot.add(model);
       modelReady = true;
+      LOADER.finish(saveKey);
     }
   );
 
